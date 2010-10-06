@@ -109,7 +109,7 @@
       assertLinkFromUrl(
           'https://cs.corp.google.com/p#chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h&q=NavigationController&sa=N&cd=4&ct=rc',
           ChromiumLink,
-          'chrome/browser/tab_contents/navigation_controller.h',
+          'src/chrome/browser/tab_contents/navigation_controller.h',
           ['http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=annotate', 
            'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=log', 
            'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=markup',
@@ -123,42 +123,49 @@
       assertLinkFromUrl(
           'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/chrome/browser/tab_contents/navigation_controller.h&q=navigation_controller&exact_package=chromium&sa=N&cd=2&ct=rc',
           ChromiumLink,
-          'chrome/browser/tab_contents/navigation_controller.h',
+          'src/chrome/browser/tab_contents/navigation_controller.h',
           []);           
-
+          
       // Chromium from Chromium ViewVC
       assertLinkFromUrl(
           'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=markup',
           ChromiumLink,
-          'chrome/browser/tab_contents/navigation_controller.h',
+          'src/chrome/browser/tab_contents/navigation_controller.h',
           []);
       assertLinkFromUrl(
           'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=log',
           ChromiumLink,
-          'chrome/browser/tab_contents/navigation_controller.h',
+          'src/chrome/browser/tab_contents/navigation_controller.h',
           []);
       assertLinkFromUrl(
           'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=annotate',
           ChromiumLink,
-          'chrome/browser/tab_contents/navigation_controller.h',
+          'src/chrome/browser/tab_contents/navigation_controller.h',
           []);
           
       // Chromium from Chromium Git
       assertLinkFromUrl(
           'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;a=blob;f=chrome/browser/app_modal_dialog_mac.mm;h=8d233870779deb041cc49c54b110f6f927d42a8a;hb=HEAD',
           ChromiumLink,
-          'chrome/browser/app_modal_dialog_mac.mm',
+          'src/chrome/browser/app_modal_dialog_mac.mm',
           []);
       assertLinkFromUrl(
           'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;a=history;f=chrome/browser/app_modal_dialog_mac.mm;h=8d233870779deb041cc49c54b110f6f927d42a8a;hb=HEAD',
           ChromiumLink,
-          'chrome/browser/app_modal_dialog_mac.mm',
+          'src/chrome/browser/app_modal_dialog_mac.mm',
           []);          
       assertLinkFromUrl(
           'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;a=blob_plain;f=chrome/browser/app_modal_dialog_mac.mm;hb=HEAD',
           ChromiumLink,
-          'chrome/browser/app_modal_dialog_mac.mm',
+          'src/chrome/browser/app_modal_dialog_mac.mm',
           []);
+          
+      // Chromium tools from public Code Search
+      assertLinkFromUrl(
+          'https://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/tools/buildbot/pylibs/buildbot/status/web/index.html&q=sweetcanvas&exact_package=chromium&d=5',
+          ChromiumLink,
+          'tools/buildbot/pylibs/buildbot/status/web/index.html',
+          []);          
           
       // Chromium and WebKit from Grok
       assertLinkFromUrl(
@@ -169,7 +176,7 @@
       assertLinkFromUrl(
           'http://0.chrome_serve.web.web.grok.rv.borg.google.com:25621/?file=chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h',
           ChromiumLink,
-          'chrome/browser/tab_contents/navigation_controller.h',
+          'src/chrome/browser/tab_contents/navigation_controller.h',
           []);
       
       // V8 from internal Code Search (and related links)

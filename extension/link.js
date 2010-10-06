@@ -15,8 +15,8 @@ var WEBKIT_LAYOUT_PREFIX = 'LayoutTests/';
 var WEBKIT_TRAC_BASE_BROWSER_PATH = 'http://trac.webkit.org/browser/trunk/';
 var WEBKIT_TRAC_BASE_LOG_PATH = 'http://trac.webkit.org/log/trunk/';
 
-var CHROMIUM_REPOSITORY_PREFIX = 'chrome/trunk/src/';
-var CHROMIUM_VIEWEVC_PATH = 'http://src.chromium.org/viewvc/chrome/trunk/src/';
+var CHROMIUM_REPOSITORY_PREFIX = 'chrome/trunk/';
+var CHROMIUM_VIEWEVC_PATH = 'http://src.chromium.org/viewvc/chrome/trunk/';
 var CHROMIUM_GIT_PATH = 'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;hb=HEAD;f=';
 
 var V8_REPOSITORY_PREFIX = 'chrome/trunk/src/v8/';
@@ -106,7 +106,7 @@ function extractFromWebKitTrac(url) {
 function extractFromChromium(url) {
   var path = goog.uri.utils.getPath(url);
   
-  var VIEWVC_TRUNK_SRC_RE = new RegExp('/viewvc/chrome/trunk/src/(.+)');
+  var VIEWVC_TRUNK_SRC_RE = new RegExp('/viewvc/chrome/trunk/(.+)');
   var match = VIEWVC_TRUNK_SRC_RE.exec(path);
   if (match) {
     return new ChromiumLink(match[1]);
@@ -121,7 +121,7 @@ function extractFromChromium(url) {
       params[keyAndValue[0]] = keyAndValue[1];
     }
     if (params.p == 'chromium.git' && params.f) {
-      return new ChromiumLink(params.f);
+      return new ChromiumLink('src/' + params.f);
     }
   }
 }
@@ -145,7 +145,7 @@ function extractFromCodesite(url) {
 
 function WebKitLink(path) {
   Link.call(this, path);
-  this.chromiumRepositoryPath = 'third_party/WebKit/' + path;  
+  this.chromiumRepositoryPath = 'src/third_party/WebKit/' + path;  
 }
 goog.inherits(WebKitLink, Link);
 
@@ -219,19 +219,26 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
         'Annotation (ViewVC)',
         CHROMIUM_ICON_URL),
     new RelatedLink(
-        CHROMIUM_GIT_PATH + this.path + ';a=blob',
-        'Current version (Git)',
-        GIT_ICON_URL),  
-    new RelatedLink(
-        CHROMIUM_GIT_PATH + this.path + ';a=history',
-        'History (Git)',
-        GIT_ICON_URL),        
-    new RelatedLink(
-        'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2Fsrc%2F' + encodeURIComponent(this.path),
+        'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2F' + encodeURIComponent(this.path),
         'Grok',
         GROK_ICON_URL,
         true)
   ]);
+  
+  // Git repository only has the src/ subtree from the Chromium repository
+  if (goog.string.startsWith(this.path, 'src/')) {
+    var gitPath = goog.string.removeAt(this.path, 0, 'src/'.length);
+    goog.array.extend(relatedLinks, [
+      new RelatedLink(
+          CHROMIUM_GIT_PATH + gitPath + ';a=blob',
+          'Current version (Git)',
+          GIT_ICON_URL),  
+      new RelatedLink(
+          CHROMIUM_GIT_PATH + gitPath + ';a=history',
+          'History (Git)',
+          GIT_ICON_URL)
+    ]);
+  }
 };
 
 
@@ -269,7 +276,7 @@ function Link(path) {
 Link.prototype.addRelatedLinks = function(relatedLinks) {
   relatedLinks.push(   
       new RelatedLink(
-          'http://www.google.com/codesearch/p#' + PUBLIC_CODE_SEARCH_PATH_PREFIX + '/src/' + this.chromiumRepositoryPath,
+          'http://www.google.com/codesearch/p#' + PUBLIC_CODE_SEARCH_PATH_PREFIX + '/' + this.chromiumRepositoryPath,
           'Code Search',
           CODE_SEARCH_ICON_URL));
 };
