@@ -10,7 +10,7 @@
     "128": "icon128.png"
   },
   "background": {
-    "scripts": ["closure-lite.js", "link.js", "background.js"]
+    "scripts": ["js/closure-lite.js", "js/link.js", "js/background.js"]
   },
   "page_action": {
     "default_icon": "icon19.png",
