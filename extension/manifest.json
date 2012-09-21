@@ -1,6 +1,7 @@
 {
+  "manifest_version": 2,
   "name": "Source Quicklinks",
-  "version": "1.1",
+  "version": "1.3",
   "description": "Allows quick jumping between WebKit, Chrome, V8, etc. source links",
   "icons": {
     "16": "icon16.png",
@@ -8,7 +9,9 @@
     "48": "icon48.png",
     "128": "icon128.png"
   },
-  "background_page": "background.html",
+  "background": {
+    "scripts": ["closure-lite.js", "link.js", "background.js"]
+  },
   "page_action": {
     "default_icon": "icon19.png",
     "default_title": "Source Quicklinks",

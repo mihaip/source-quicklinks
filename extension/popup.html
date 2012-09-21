@@ -4,40 +4,41 @@
 	<title>Source Quicklink</title>
   <script src="closure-lite.js"></script>
   <script src="link.js"></script>
+  <script src="popup.js"></script>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: Lucida Grande;
       font-size: 12px;
-    } 
-    
+    }
+
     a {
       text-decoration: none;
     }
-    
+
     .hidden {
       display: none;
-    }    
-    
+    }
+
     #no-link {
       padding: 5px;
       color: #999;
       white-space: nowrap;
     }
-    
+
     .related-links {
       white-space: nowrap;
       list-style-type: none;
       padding: 0;
       margin: 0;
     }
-    
+
     .related-links li {
       padding: 0;
-      margin: 0;    
+      margin: 0;
     }
-    
+
     .related-links li a {
       padding: 2px 0;
       display: block;
@@ -52,24 +53,8 @@
       padding-right: 2px;
     }
   </style>
-  
-  <script>
-    function init() {
-      chrome.tabs.getSelected(undefined, function(tab) {
-        var link = Link.fromUrl(tab.url);
-        if (link) {
-          // TODO(mihaip): allow visibility of internal-only links to be
-          // configured.
-          document.body.appendChild(link.getRelatedLinksNode(false, tab.url));
-        } else {
-          // Shouldn't happen...
-          goog.dom.classes.remove(goog.dom.$('no-link'), 'hidden');
-        }
-      });
-    }
-  </script>
 </head>
-<body onload="init()">
+<body>
   <div id="no-link" class="hidden">No related links found.</div>
 </body>
 </html>
