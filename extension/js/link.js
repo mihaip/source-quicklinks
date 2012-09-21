@@ -28,22 +28,22 @@ var V8_CODESITE_BASE_LOG_PATH = 'http://code.google.com/p/v8/source/list?path=' 
 var TRAC_ICON_URL = 'http://trac.webkit.org/chrome/common/trac.ico';
 var CHROMIUM_ICON_URL = 'http://build.chromium.org/favicon.ico';
 var GIT_ICON_URL = 'http://src.chromium.org/gitweb/git-favicon.png';
-var CODE_SEARCH_ICON_URL = 'http://www.google.com/codesearch/images/favicon.ico';
+var CODE_SEARCH_ICON_URL = 'http://www.google.com/favicon.ico';
 var GROK_ICON_URL = 'http://0.chrome_serve.web.web.grok.rv.borg.google.com/favicon.ico';
 var CODESITE_ICON_URL = 'http://www.gstatic.com/codesite/ph/images/phosting.ico';
 
 function extractFromPublicCodeSearch(url) {
   var fragment = goog.uri.utils.getFragment(url);
-  
+
   if (goog.string.isEmptySafe(fragment)) {
     return null;
   }
-  
+
   var path = fragment.split('&')[0];
   if (!goog.string.startsWith(path, PUBLIC_CODE_SEARCH_PATH_PREFIX)) {
     return null;
   }
-  
+
   return extractFromChromiumRepositoryPath(
       'chrome/trunk' +
           goog.string.removeAt(path, 0, PUBLIC_CODE_SEARCH_PATH_PREFIX.length));
@@ -51,27 +51,27 @@ function extractFromPublicCodeSearch(url) {
 
 function extractFromInternalCodeSearch(url) {
   var fragment = goog.uri.utils.getFragment(url);
-  
+
   if (goog.string.isEmptySafe(fragment)) {
     return null;
   }
-  
-  var path = fragment.split('&')[0];  
-  
+
+  var path = fragment.split('&')[0];
+
   return extractFromChromiumRepositoryPath(path);
 }
 
 function extractFromGrok(url) {
   var path = goog.uri.utils.getParamValue(url, 'file');
-  
+
   return extractFromChromiumRepositoryPath(path);
 }
 
 function extractFromChromiumRepositoryPath(path) {
   if (goog.string.isEmptySafe(path)) {
     return null;
-  }  
-  
+  }
+
   if (goog.string.startsWith(path, V8_REPOSITORY_PREFIX)) {
     return new V8Link(goog.string.removeAt(path, 0, V8_REPOSITORY_PREFIX.length));
   }
@@ -83,19 +83,19 @@ function extractFromChromiumRepositoryPath(path) {
         ? new WebKitLayoutTestLink(webKitPath)
         : new WebKitLink(webKitPath);
   }
-  
+
   // Should be last
   if (goog.string.startsWith(path, CHROMIUM_REPOSITORY_PREFIX)) {
     return new ChromiumLink(
         goog.string.removeAt(path, 0, CHROMIUM_REPOSITORY_PREFIX.length));
-  }  
-  
-  return null;  
+  }
+
+  return null;
 }
 
 function extractFromWebKitTrac(url) {
   var path = goog.uri.utils.getPath(url);
-  
+
   var TRUNK_RE = new RegExp('/[^/]+/trunk/(.+)');
   var match = TRUNK_RE.exec(path);
   if (match) {
@@ -105,13 +105,13 @@ function extractFromWebKitTrac(url) {
 
 function extractFromChromium(url) {
   var path = goog.uri.utils.getPath(url);
-  
+
   var VIEWVC_TRUNK_SRC_RE = new RegExp('/viewvc/chrome/trunk/(.+)');
   var match = VIEWVC_TRUNK_SRC_RE.exec(path);
   if (match) {
     return new ChromiumLink(match[1]);
   }
-  
+
   if (path == '/cgi-bin/gitweb.cgi') {
     var query = goog.uri.utils.getQueryData(url);
     var pieces = query.split(';');
@@ -128,7 +128,7 @@ function extractFromChromium(url) {
 
 function extractFromCodesite(url) {
   var path = goog.uri.utils.getPath(url);
-  
+
   if (goog.string.startsWith(path, '/p/v8/')) {
     if (goog.string.startsWith(path, V8_CODESITE_BROWSE_PATH)) {
       return new V8Link(goog.string.removeAt(path, 0, V8_CODESITE_BROWSE_PATH.length));
@@ -138,20 +138,20 @@ function extractFromCodesite(url) {
       return new V8Link(goog.string.removeAt(pathParam, 0, V8_CODESITE_BASE_PATH.length));
     }
   }
-  
+
   return null;
 }
 
 
 function WebKitLink(path) {
   Link.call(this, path);
-  this.chromiumRepositoryPath = 'src/third_party/WebKit/' + path;  
+  this.chromiumRepositoryPath = 'src/third_party/WebKit/' + path;
 }
 goog.inherits(WebKitLink, Link);
 
 WebKitLink.prototype.addRelatedLinks = function(relatedLinks) {
   WebKitLink.superClass_.addRelatedLinks.call(this, relatedLinks);
-  
+
   goog.array.extend(relatedLinks, [
     new RelatedLink(
         WEBKIT_TRAC_BASE_BROWSER_PATH + this.path,
@@ -169,7 +169,7 @@ WebKitLink.prototype.addRelatedLinks = function(relatedLinks) {
         'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2Fsrc%2Fthird_party%2FWebKit%2F' + encodeURIComponent(this.path),
         'Grok',
         GROK_ICON_URL,
-        true)        
+        true)
   ]);
 };
 
@@ -189,12 +189,12 @@ WebKitLayoutTestLink.getTestPath = function(path) {
 
 WebKitLayoutTestLink.prototype.addRelatedLinks = function(relatedLinks) {
   WebKitLayoutTestLink.superClass_.addRelatedLinks.call(this, relatedLinks);
-  
+
   relatedLinks.push(new RelatedLink(
       'http://test-results.appspot.com/dashboards/flakiness_dashboard.html' +
           '#useWebKitCanary=true&tests=' + encodeURIComponent(this.testPath),
       'Chromium/WebKit Test History',
-      CHROMIUM_ICON_URL));  
+      CHROMIUM_ICON_URL));
 }
 
 function ChromiumLink(path) {
@@ -224,7 +224,7 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
         GROK_ICON_URL,
         true)
   ]);
-  
+
   // Git repository only has the src/ subtree from the Chromium repository
   if (goog.string.startsWith(this.path, 'src/')) {
     var gitPath = goog.string.removeAt(this.path, 0, 'src/'.length);
@@ -232,7 +232,7 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
       new RelatedLink(
           CHROMIUM_GIT_PATH + gitPath + ';a=blob',
           'Current version (Git)',
-          GIT_ICON_URL),  
+          GIT_ICON_URL),
       new RelatedLink(
           CHROMIUM_GIT_PATH + gitPath + ';a=history',
           'History (Git)',
@@ -274,7 +274,7 @@ function Link(path) {
 }
 
 Link.prototype.addRelatedLinks = function(relatedLinks) {
-  relatedLinks.push(   
+  relatedLinks.push(
       new RelatedLink(
           'http://www.google.com/codesearch/p#' + PUBLIC_CODE_SEARCH_PATH_PREFIX + '/' + this.chromiumRepositoryPath,
           'Code Search',
@@ -287,44 +287,12 @@ Link.prototype.getRelatedLinks = function() {
   return relatedLinks;
 }
 
-Link.prototype.getRelatedLinksNode = function(showInternalOnlyLinks, opt_currentUrl) {
-  var relatedLinks = this.getRelatedLinks();
-  
-  var relatedLinksNode = goog.dom.$dom('ul', 'related-links');
-  
-  for (var i = 0, relatedLink; relatedLink = relatedLinks[i]; i++) {
-    // Skip internal links if not requested
-    if (relatedLink.internalOnly && !showInternalOnlyLinks) continue;
-    
-    // Skip related links that point to the current URL
-    if (opt_currentUrl == relatedLink.url) continue;
-    
-    var relatedLinkNode = goog.dom.$dom(
-        'a', {
-          'href': relatedLink.url,
-          'target': '_blank',
-        }, [
-            goog.dom.$dom('img', {
-              'src': relatedLink.iconUrl,
-              'width': '16',
-              'height': '16',
-              'border': '0',
-              'alt': ''
-            }),
-            relatedLink.title
-        ]);
-    relatedLinksNode.appendChild(goog.dom.$dom('li', {}, relatedLinkNode));
-  }
-  
-  return relatedLinksNode;
-}
-
 Link.fromUrl = function(url) {
   var hostname = goog.uri.utils.getDomain(url);
-  
+
   if (hostname in EXTRACTORS_BY_HOSTNAME) {
     return EXTRACTORS_BY_HOSTNAME[hostname](url);
   }
-  
+
   return null;
 };
