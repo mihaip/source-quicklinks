@@ -53,7 +53,7 @@ function runTests() {
       'WebCore/dom/ExceptionCode.h',
       ['http://trac.webkit.org/log/trunk/WebCore/dom/ExceptionCode.h',
        'http://trac.webkit.org/browser/trunk/WebCore/dom/ExceptionCode.h',
-       'http://www.google.com/codesearch/p#OAMlx_jo-ck/src/third_party/WebKit/WebCore/dom/ExceptionCode.h']);
+       'http://code.google.com/p/chromium/source/search?q=file:^src/third_party/WebKit/WebCore/dom/ExceptionCode.h$']);
 
   // WebKit layout test from internal Code Search (and related links)
   assertLinkFromUrl(
@@ -107,7 +107,7 @@ function runTests() {
        'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=log',
        'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=markup',
        'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2Fsrc%2Fchrome%2Fbrowser%2Ftab_contents%2Fnavigation_controller.h',
-       'http://www.google.com/codesearch/p#OAMlx_jo-ck/src/chrome/browser/tab_contents/navigation_controller.h',
+       'http://code.google.com/p/chromium/source/search?q=file:^src/chrome/browser/tab_contents/navigation_controller.h$',
        'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=blob',
        'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=history'
        ]);

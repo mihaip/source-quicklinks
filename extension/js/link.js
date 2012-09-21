@@ -244,7 +244,7 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
 
 function V8Link(path) {
   Link.call(this, path);
-  this.chromiumRepositoryPath = 'v8/' + path;
+  this.chromiumRepositoryPath = 'src/v8/' + path;
 }
 goog.inherits(V8Link, Link);
 
@@ -276,7 +276,12 @@ function Link(path) {
 Link.prototype.addRelatedLinks = function(relatedLinks) {
   relatedLinks.push(
       new RelatedLink(
-          'http://www.google.com/codesearch/p#' + PUBLIC_CODE_SEARCH_PATH_PREFIX + '/' + this.chromiumRepositoryPath,
+          // We can't generare a direct link to a file while using the Chromium
+          // framing of Code Search, but searching for the file should be
+          // equivalent, since Code Search will automatically open the file if
+          // it's the only result.
+          'http://code.google.com/p/chromium/source/search?q=file:^' +
+              this.chromiumRepositoryPath + '$',
           'Code Search',
           CODE_SEARCH_ICON_URL));
 };
