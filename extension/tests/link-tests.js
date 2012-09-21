@@ -64,21 +64,34 @@ function runTests() {
 
   // WebKit from public Code Search
   assertLinkFromUrl(
-      'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/third_party/WebKit/WebCore/dom/ExceptionCode.h&q=exceptioncode&exact_package=chromium&sa=N&cd=1&ct=rc',
+      'http://www.google.com/codesearchp?hl=en#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&q=exceptioncode&exact_package=chromium&sa=N&cd=1&ct=rc',
       WebKitLink,
-      'WebCore/dom/ExceptionCode.h',
+      'Source/WebCore/dom/ExceptionCode.h',
       []);
 
   assertLinkFromUrl(
-      'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/third_party/WebKit/WebCore/dom/ExceptionCode.h&q=exceptioncode&gs=cpp:WebCore::INDEX_SIZE_ERR@chrome/trunk/src/third_party/WebKit/WebCore/dom/ExceptionCode.h%257Cdef&gsn=INDEX_SIZE_ERR',
+      'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&q=exceptioncode&gs=cpp:WebCore::INDEX_SIZE_ERR@chrome/trunk/src/third_party/WebKit/WebCore/dom/ExceptionCode.h%257Cdef&gsn=INDEX_SIZE_ERR',
       WebKitLink,
-      'WebCore/dom/ExceptionCode.h',
+      'Source/WebCore/dom/ExceptionCode.h',
       []);
 
   assertLinkFromUrl(
-      'http://www.google.com/codesearch/p#OAMlx_jo-ck/src/third_party/WebKit/WebCore/dom/ExceptionCode.h',
+      'http://www.google.com/codesearch/p#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h',
       WebKitLink,
-      'WebCore/dom/ExceptionCode.h',
+      'Source/WebCore/dom/ExceptionCode.h',
+      []);
+
+  // WebKit from public Code Search frame
+  assertLinkFromUrl(
+      'http://code.google.com/searchframe#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&exact_package=chromium&q=exceptioncode&type=cs',
+      WebKitLink,
+      'Source/WebCore/dom/ExceptionCode.h',
+      []);
+
+  assertLinkFromUrl(
+      'http://code.google.com/searchframe#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h',
+      WebKitLink,
+      'Source/WebCore/dom/ExceptionCode.h',
       []);
 
   // WebKit from WebKit Trac
@@ -117,6 +130,13 @@ function runTests() {
       'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/chrome/browser/tab_contents/navigation_controller.h&q=navigation_controller&exact_package=chromium&sa=N&cd=2&ct=rc',
       ChromiumLink,
       'src/chrome/browser/tab_contents/navigation_controller.h',
+      []);
+
+  // Chromium from public Code Search frame
+  assertLinkFromUrl(
+      'http://code.google.com/searchframe#OAMlx_jo-ck/src/content/public/browser/navigation_controller.h&exact_package=chromium&q=navigation_controller&type=cs',
+      ChromiumLink,
+      'src/content/public/browser/navigation_controller.h',
       []);
 
   // Chromium from Chromium ViewVC
@@ -158,6 +178,13 @@ function runTests() {
       'https://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/tools/buildbot/pylibs/buildbot/status/web/index.html&q=sweetcanvas&exact_package=chromium&d=5',
       ChromiumLink,
       'tools/buildbot/pylibs/buildbot/status/web/index.html',
+      []);
+
+  // Chromium tools from public Code Search frame
+  assertLinkFromUrl(
+      'http://code.google.com/searchframe#OAMlx_jo-ck/tools/build/masters/master.chromium/templates/builder_stats.html&exact_package=chromium&q=sweetcanvas&type=cs',
+      ChromiumLink,
+      'tools/build/masters/master.chromium/templates/builder_stats.html',
       []);
 
   // Chromium and WebKit from Grok

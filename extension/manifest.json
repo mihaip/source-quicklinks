@@ -19,5 +19,13 @@
   },
   "permissions": [
     "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://code.google.com/searchframe"],
+      "js": ["js/code-search-frame.user.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
   ]
 }

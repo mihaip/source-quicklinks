@@ -137,6 +137,12 @@ function extractFromCodesite(url) {
     if (goog.string.startsWith(pathParam, V8_CODESITE_BASE_PATH)) {
       return new V8Link(goog.string.removeAt(pathParam, 0, V8_CODESITE_BASE_PATH.length));
     }
+
+    return null;
+  }
+
+  if (path == '/searchframe') {
+    return extractFromPublicCodeSearch(url);
   }
 
   return null;

@@ -30,16 +30,10 @@ function getRelatedLinksNode(link, showInternalOnlyLinks, opt_currentUrl) {
   return relatedLinksNode;
 }
 
-onload = function() {
-  chrome.tabs.getSelected(undefined, function(tab) {
-    var link = Link.fromUrl(tab.url);
-    if (link) {
-      // TODO(mihaip): allow visibility of internal-only links to be
-      // configured.
-      document.body.appendChild(getRelatedLinksNode(link, false, tab.url));
-    } else {
-      // Shouldn't happen...
-      goog.dom.classes.remove(goog.dom.$('no-link'), 'hidden');
-    }
-  });
-};
+var backgroundPage = chrome.extension.getBackgroundPage();
+var link = backgroundPage.currentLink;
+
+// TODO(mihaip): allow visibility of internal-only links to be
+// configured.
+document.body.appendChild(
+    getRelatedLinksNode(link, false, backgroundPage.currentUrl));
