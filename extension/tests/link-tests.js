@@ -121,8 +121,8 @@ function runTests() {
        'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=markup',
        'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2Fsrc%2Fchrome%2Fbrowser%2Ftab_contents%2Fnavigation_controller.h',
        'http://code.google.com/p/chromium/source/search?q=file:^src/chrome/browser/tab_contents/navigation_controller.h$',
-       'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=blob',
-       'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=history'
+       'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=blob',
+       'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=history'
        ]);
 
   // Chromium from public Code Search
@@ -158,17 +158,17 @@ function runTests() {
 
   // Chromium from Chromium Git
   assertLinkFromUrl(
-      'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;a=blob;f=chrome/browser/app_modal_dialog_mac.mm;h=8d233870779deb041cc49c54b110f6f927d42a8a;hb=HEAD',
+      'http://git.chromium.org/gitweb/?p=chromium.git;a=blob;f=chrome/browser/app_modal_dialog_mac.mm;h=8d233870779deb041cc49c54b110f6f927d42a8a;hb=HEAD',
       ChromiumLink,
       'src/chrome/browser/app_modal_dialog_mac.mm',
       []);
   assertLinkFromUrl(
-      'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;a=history;f=chrome/browser/app_modal_dialog_mac.mm;h=8d233870779deb041cc49c54b110f6f927d42a8a;hb=HEAD',
+      'http://git.chromium.org/gitweb/?p=chromium.git;a=history;f=chrome/browser/app_modal_dialog_mac.mm;h=8d233870779deb041cc49c54b110f6f927d42a8a;hb=HEAD',
       ChromiumLink,
       'src/chrome/browser/app_modal_dialog_mac.mm',
       []);
   assertLinkFromUrl(
-      'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;a=blob_plain;f=chrome/browser/app_modal_dialog_mac.mm;hb=HEAD',
+      'http://git.chromium.org/gitweb/?p=chromium.git;a=blob_plain;f=chrome/browser/app_modal_dialog_mac.mm;hb=HEAD',
       ChromiumLink,
       'src/chrome/browser/app_modal_dialog_mac.mm',
       []);

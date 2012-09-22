@@ -3,6 +3,7 @@ var EXTRACTORS_BY_HOSTNAME = {
   'cs.corp.google.com': extractFromInternalCodeSearch,
   'trac.webkit.org': extractFromWebKitTrac,
   'src.chromium.org': extractFromChromium,
+  'git.chromium.org': extractFromChromiumGit,
   '0.chrome_serve.web.web.grok.rv.borg.google.com': extractFromGrok,
   'code.google.com': extractFromCodesite
 };
@@ -17,7 +18,7 @@ var WEBKIT_TRAC_BASE_LOG_PATH = 'http://trac.webkit.org/log/trunk/';
 
 var CHROMIUM_REPOSITORY_PREFIX = 'chrome/trunk/';
 var CHROMIUM_VIEWEVC_PATH = 'http://src.chromium.org/viewvc/chrome/trunk/';
-var CHROMIUM_GIT_PATH = 'http://src.chromium.org/cgi-bin/gitweb.cgi?p=chromium.git;hb=HEAD;f=';
+var CHROMIUM_GIT_PATH = 'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=';
 
 var V8_REPOSITORY_PREFIX = 'chrome/trunk/src/v8/';
 var V8_CODESITE_HOSTNAME = 'http://code.google.com';
@@ -27,7 +28,7 @@ var V8_CODESITE_BASE_LOG_PATH = 'http://code.google.com/p/v8/source/list?path=' 
 
 var TRAC_ICON_URL = 'http://trac.webkit.org/chrome/common/trac.ico';
 var CHROMIUM_ICON_URL = 'http://build.chromium.org/favicon.ico';
-var GIT_ICON_URL = 'http://src.chromium.org/gitweb/git-favicon.png';
+var GIT_ICON_URL = 'http://git.chromium.org/gitweb/static/git-favicon.png';
 var CODE_SEARCH_ICON_URL = 'http://www.google.com/favicon.ico';
 var GROK_ICON_URL = 'http://0.chrome_serve.web.web.grok.rv.borg.google.com/favicon.ico';
 var CODESITE_ICON_URL = 'http://www.gstatic.com/codesite/ph/images/phosting.ico';
@@ -112,7 +113,13 @@ function extractFromChromium(url) {
     return new ChromiumLink(match[1]);
   }
 
-  if (path == '/cgi-bin/gitweb.cgi') {
+  return null;
+}
+
+function extractFromChromiumGit(url) {
+  var path = goog.uri.utils.getPath(url);
+
+  if (path == '/gitweb/') {
     var query = goog.uri.utils.getQueryData(url);
     var pieces = query.split(';');
     var params = {};
