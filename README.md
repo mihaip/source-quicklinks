@@ -1,14 +1,17 @@
 A Chrome extension that adds a page action that allows cross-referencing of source files from the following open-source projects:
 
-* Chromium
-* WebKit
-* V8
+* [Chromium](http://www.chromium.org/)
+* [WebKit](http://trac.webkit.org/)
+* [V8](http://code.google.com/p/v8)
 
-Links point between:
+Adds links between:
 
-* Google Code Search (the Chromium sub-section at [http://www.google.com/codesearch?vert=chromium](http://www.google.com/codesearch?vert=chromium))
+* [Chromium code search](http://code.google.com/p/chromium/source/search), which also includes all of Chromium's dependencies (WebKit, V8, etc.)
 * Annotations, logs and revisions on [trac.webkit.org](https://trac.webkit.org)
-* Annotations, logs and revisions on [src.chromium.org](https://src.chromium.org) (both ViewVC and Gitweb)
+* Annotations, logs and revisions on [src.chromium.org](https://src.chromium.org)
+* Annotations, logs and revisions on [git.chromium.org](https://git.chromium.org)
 * Logs and revisions on [code.google.com/p/v8](https://code.google.com/p/v8)
 
 Available [in the Chrome Web Store](https://chrome.google.com/webstore/detail/ncjnjlfeffaclcioiphpaofhkebnmknj).
+
+Also adds a `sql` search/Omnibox keyword for triggering searches in the above repositories (by contents, file name, and author).
