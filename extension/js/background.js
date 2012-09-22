@@ -41,7 +41,7 @@ chrome.omnibox.setDefaultSuggestion({
 });
 
 chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
-  suggest([
+  var results = [
     {
       content: getCodeSearchUrl(text + ' -file:^src/third_party -file:^src/v8'),
       description: '<match>' + text + '</match> in the Chromium repository (no dependencies)'
@@ -54,7 +54,22 @@ chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
       content: getCodeSearchUrl('file:' + text),
       description: '<match>' + text + '</match> in file names'
     },
-  ]);
+  ];
+
+  if (text.indexOf('@') != -1) {
+    results.unshift.apply(results, [
+      {
+        content: 'http://git.chromium.org/gitweb/?p=chromium.git&a=search&h=HEAD&st=author&s=' + text,
+        description: 'Changes by <match>' + text + '</match> in the Chromium repository'
+      },
+      {
+        content: 'http://trac.webkit.org/search?q=' + text + '&noquickjump=1&changeset=on',
+        description: 'Changes by <match>' + text + '</match> in the WebKit repository'
+      }
+    ]);
+  }
+
+  suggest(results);
 });
 
 chrome.omnibox.onInputEntered.addListener(function(text) {
