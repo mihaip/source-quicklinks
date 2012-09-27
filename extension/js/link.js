@@ -244,11 +244,15 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
     goog.array.extend(relatedLinks, [
       new RelatedLink(
           CHROMIUM_GIT_PATH + gitPath + ';a=blob',
-          'Current version (Git)',
+          'Current version (Gitweb)',
           GIT_ICON_URL),
       new RelatedLink(
           CHROMIUM_GIT_PATH + gitPath + ';a=history',
-          'History (Git)',
+          'History (Gitweb)',
+          GIT_ICON_URL),
+      new RelatedLink(
+          CHROMIUM_GIT_PATH + gitPath + ';a=blame',
+          'Blame (Gitweb)',
           GIT_ICON_URL)
     ]);
   }
