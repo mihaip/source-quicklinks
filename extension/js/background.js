@@ -1,33 +1,39 @@
-var currentTabId;
-var currentUrl;
-var currentLink;
+// Map from tab ID to {link, url} object. Will be loaded by the popup when it's
+// displayed for a tab, so that it doesn't have to do the same link extraction
+// that the background page already did.
+var tabState = {};
 
 function checkForLink(tabId, changeInfo, tab) {
-  currentTabId = tabId;
   var link = Link.fromUrl(tab.url);
   if (link) {
     chrome.pageAction.show(tabId);
-    currentLink = link;
-    currentUrl = tab.url;
+    tabState[tabId] = {
+      link: link,
+      url: tab.url
+    };
   } else {
-    currentLink = null;
-    currentUrl = null;
+    delete tabState[tabId];
   }
 }
 
 chrome.tabs.onUpdated.addListener(checkForLink);
 
+chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
+  delete tabState[tabId];
+});
+
 chrome.extension.onMessage.addListener(function(message, sender) {
   if (message.codeSearchUrl) {
     var link = Link.fromUrl(message.codeSearchUrl);
     if (link) {
-      currentLink = link;
-      currentUrl = message.codeSearchUrl;
-      chrome.pageAction.show(currentTabId);
+      tabState[sender.tab.id] = {
+        link: link,
+        url: message.codeSearchUrl
+      }
+      chrome.pageAction.show(sender.tab.id);
     } else {
-      currentLink = null;
-      currentUrl = null;
-      chrome.pageAction.hide(currentTabId);
+      delete tabState[sender.tab.id];
+      chrome.pageAction.hide(sender.tab.id);
     }
   }
 });
