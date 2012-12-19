@@ -32,13 +32,20 @@ function getRelatedLinksNode(link, showInternalOnlyLinks, opt_currentUrl) {
 
 chrome.tabs.query({currentWindow: true, active:true}, function(tabs) {
   var currentTabId = tabs[0].id;
-  var backgroundPage = chrome.extension.getBackgroundPage();
-  var tabState = backgroundPage.tabState[currentTabId];
 
-  if (tabState) {
+  tabState.get(currentTabId, function(url) {
+    if (!url) {
+      console.warn("Could not find state for current tab " + currentTabId);
+      return;
+    }
+    var link = Link.fromUrl(url);
+    if (!link) {
+      console.warn("Could not extract link from " + url);
+      return;
+    }
+
     // TODO(mihaip): allow visibility of internal-only links to be
     // configured.
-    document.body.appendChild(
-        getRelatedLinksNode(tabState.link, false, tabState.url));
-  }
+    document.body.appendChild(getRelatedLinksNode(link, false, url));
+  });
 });

@@ -1,38 +1,32 @@
-// Map from tab ID to {link, url} object. Will be loaded by the popup when it's
-// displayed for a tab, so that it doesn't have to do the same link extraction
-// that the background page already did.
-var tabState = {};
-
-function checkForLink(tabId, changeInfo, tab) {
-  var link = Link.fromUrl(tab.url);
+function checkForLink(url, tabId) {
+  var link = Link.fromUrl(url);
   if (link) {
     chrome.pageAction.show(tabId);
-    tabState[tabId] = {
-      link: link,
-      url: tab.url
-    };
+    tabState.set(tabId, url);
   } else {
-    delete tabState[tabId];
+    tabState.delete(tabId);
   }
 }
 
-chrome.tabs.onUpdated.addListener(checkForLink);
+var urlFilters = [];
+for (var hostname in EXTRACTORS_BY_HOSTNAME) {
+  urlFilters.push({hostEquals: hostname});
+}
 
-chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
-  delete tabState[tabId];
-});
+chrome.webNavigation.onCompleted.addListener(
+  function(details) {
+    checkForLink(details.url, details.tabId);
+  },
+  {url: urlFilters});
 
 chrome.extension.onMessage.addListener(function(message, sender) {
   if (message.codeSearchUrl) {
     var link = Link.fromUrl(message.codeSearchUrl);
     if (link) {
-      tabState[sender.tab.id] = {
-        link: link,
-        url: message.codeSearchUrl
-      }
+      tabState.set(sender.tab.id, message.codeSearchUrl);
       chrome.pageAction.show(sender.tab.id);
     } else {
-      delete tabState[sender.tab.id];
+      tabState.delete(sender.tab.id);
       chrome.pageAction.hide(sender.tab.id);
     }
   }
@@ -87,4 +81,10 @@ chrome.omnibox.onInputEntered.addListener(function(text) {
     url = getCodeSearchUrl(text);
   }
   chrome.tabs.update({url: url});
+});
+
+chrome.runtime.onStartup.addListener(function() {
+  // Garbage collect tab states that are no longer needed (from the previous
+  // session).
+  tabState.reset();
 });
