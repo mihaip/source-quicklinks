@@ -1,14 +1,11 @@
-function getRelatedLinksNode(link, showInternalOnlyLinks, opt_currentUrl) {
+function getRelatedLinksNode(link, currentUrl) {
   var relatedLinks = link.getRelatedLinks();
 
   var relatedLinksNode = goog.dom.$dom('ul', 'related-links');
 
   for (var i = 0, relatedLink; relatedLink = relatedLinks[i]; i++) {
-    // Skip internal links if not requested
-    if (relatedLink.internalOnly && !showInternalOnlyLinks) continue;
-
     // Skip related links that point to the current URL
-    if (opt_currentUrl == relatedLink.url) continue;
+    if (currentUrl == relatedLink.url) continue;
 
     var relatedLinkNode = goog.dom.$dom(
         'a', {
@@ -44,8 +41,6 @@ chrome.tabs.query({currentWindow: true, active:true}, function(tabs) {
       return;
     }
 
-    // TODO(mihaip): allow visibility of internal-only links to be
-    // configured.
-    document.body.appendChild(getRelatedLinksNode(link, false, url));
+    document.body.appendChild(getRelatedLinksNode(link, url));
   });
 });

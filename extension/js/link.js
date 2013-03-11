@@ -1,15 +1,11 @@
 var EXTRACTORS_BY_HOSTNAME = {
-  'www.google.com': extractFromPublicCodeSearch,
-  'cs.corp.google.com': extractFromInternalCodeSearch,
   'trac.webkit.org': extractFromWebKitTrac,
   'src.chromium.org': extractFromChromium,
   'git.chromium.org': extractFromChromiumGit,
-  '0.chrome_serve.web.web.grok.rv.borg.google.com': extractFromGrok,
   'code.google.com': extractFromCodesite
 };
 
-// TODO(mihaip): is this stable?
-var PUBLIC_CODE_SEARCH_PATH_PREFIX = 'OAMlx_jo-ck';
+var CHROMIUM_CODE_SEARCH_PATH_PREFIX = "chromium";
 
 var WEBKIT_REPOSITORY_PREFIX = 'chrome/trunk/src/third_party/WebKit/';
 var WEBKIT_LAYOUT_PREFIX = 'LayoutTests/';
@@ -30,43 +26,7 @@ var TRAC_ICON_URL = 'http://trac.webkit.org/chrome/common/trac.ico';
 var CHROMIUM_ICON_URL = 'http://build.chromium.org/favicon.ico';
 var GIT_ICON_URL = 'http://git.chromium.org/gitweb/static/git-favicon.png';
 var CODE_SEARCH_ICON_URL = 'http://www.google.com/favicon.ico';
-var GROK_ICON_URL = 'http://0.chrome_serve.web.web.grok.rv.borg.google.com/favicon.ico';
 var CODESITE_ICON_URL = 'http://www.gstatic.com/codesite/ph/images/phosting.ico';
-
-function extractFromPublicCodeSearch(url) {
-  var fragment = goog.uri.utils.getFragment(url);
-
-  if (goog.string.isEmptySafe(fragment)) {
-    return null;
-  }
-
-  var path = fragment.split('&')[0];
-  if (!goog.string.startsWith(path, PUBLIC_CODE_SEARCH_PATH_PREFIX)) {
-    return null;
-  }
-
-  return extractFromChromiumRepositoryPath(
-      'chrome/trunk' +
-          goog.string.removeAt(path, 0, PUBLIC_CODE_SEARCH_PATH_PREFIX.length));
-}
-
-function extractFromInternalCodeSearch(url) {
-  var fragment = goog.uri.utils.getFragment(url);
-
-  if (goog.string.isEmptySafe(fragment)) {
-    return null;
-  }
-
-  var path = fragment.split('&')[0];
-
-  return extractFromChromiumRepositoryPath(path);
-}
-
-function extractFromGrok(url) {
-  var path = goog.uri.utils.getParamValue(url, 'file');
-
-  return extractFromChromiumRepositoryPath(path);
-}
 
 function extractFromChromiumRepositoryPath(path) {
   if (goog.string.isEmptySafe(path)) {
@@ -148,8 +108,20 @@ function extractFromCodesite(url) {
     return null;
   }
 
-  if (path == '/searchframe') {
-    return extractFromPublicCodeSearch(url);
+  if (path == '/p/chromium/codesearch') {
+    var fragment = goog.uri.utils.getFragment(url);
+    if (goog.string.isEmptySafe(fragment)) {
+      return null;
+    }
+
+    var path = fragment.split('&')[0];
+    if (!goog.string.startsWith(path, CHROMIUM_CODE_SEARCH_PATH_PREFIX)) {
+      return null;
+    }
+
+    return extractFromChromiumRepositoryPath(
+      'chrome/trunk' + goog.string.removeAt(
+        path, 0, CHROMIUM_CODE_SEARCH_PATH_PREFIX.length));
   }
 
   return null;
@@ -177,12 +149,7 @@ WebKitLink.prototype.addRelatedLinks = function(relatedLinks) {
     new RelatedLink(
         WEBKIT_TRAC_BASE_BROWSER_PATH + this.path + '?annotate=blame',
         'Annotation (Trac)',
-        TRAC_ICON_URL),
-    new RelatedLink(
-        'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2Fsrc%2Fthird_party%2FWebKit%2F' + encodeURIComponent(this.path),
-        'Grok',
-        GROK_ICON_URL,
-        true)
+        TRAC_ICON_URL)
   ]);
 };
 
@@ -230,12 +197,7 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
     new RelatedLink(
         CHROMIUM_VIEWEVC_PATH + this.path + '?view=annotate',
         'Annotation (ViewVC)',
-        CHROMIUM_ICON_URL),
-    new RelatedLink(
-        'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2F' + encodeURIComponent(this.path),
-        'Grok',
-        GROK_ICON_URL,
-        true)
+        CHROMIUM_ICON_URL)
   ]);
 
   // Git repository only has the src/ subtree from the Chromium repository
@@ -279,11 +241,10 @@ V8Link.prototype.addRelatedLinks = function(relatedLinks) {
   ]);
 };
 
-function RelatedLink(url, title, iconUrl, opt_internalOnly) {
+function RelatedLink(url, title, iconUrl) {
   this.url = url;
   this.title = title;
   this.iconUrl = iconUrl;
-  this.internalOnly = opt_internalOnly;
 }
 
 function Link(path) {
@@ -293,12 +254,8 @@ function Link(path) {
 Link.prototype.addRelatedLinks = function(relatedLinks) {
   relatedLinks.push(
       new RelatedLink(
-          // We can't generare a direct link to a file while using the Chromium
-          // framing of Code Search, but searching for the file should be
-          // equivalent, since Code Search will automatically open the file if
-          // it's the only result.
-          'http://code.google.com/p/chromium/source/search?q=file:^' +
-              this.chromiumRepositoryPath + '$',
+          'https://code.google.com/p/chromium/codesearch#chromium/' +
+            this.chromiumRepositoryPath,
           'Code Search',
           CODE_SEARCH_ICON_URL));
 };

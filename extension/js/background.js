@@ -19,21 +19,20 @@ chrome.webNavigation.onCompleted.addListener(
   },
   {url: urlFilters});
 
-chrome.extension.onMessage.addListener(function(message, sender) {
-  if (message.codeSearchUrl) {
-    var link = Link.fromUrl(message.codeSearchUrl);
-    if (link) {
-      tabState.set(sender.tab.id, message.codeSearchUrl);
-      chrome.pageAction.show(sender.tab.id);
-    } else {
-      tabState.delete(sender.tab.id);
-      chrome.pageAction.hide(sender.tab.id);
-    }
-  }
-});
+chrome.webNavigation.onReferenceFragmentUpdated.addListener(
+  function(details) {
+    checkForLink(details.url, details.tabId);
+  },
+  {url: urlFilters});
+
+chrome.webNavigation.onHistoryStateUpdated.addListener(
+  function(details) {
+    checkForLink(details.url, details.tabId);
+  },
+  {url: urlFilters});
 
 function getCodeSearchUrl(query) {
-  return 'http://code.google.com/p/chromium/source/search?q=' + query;
+  return 'https://code.google.com/p/chromium/codesearch#search/&q=' + query;
 }
 
 chrome.omnibox.setDefaultSuggestion({

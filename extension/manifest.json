@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Source Quicklinks",
-  "version": "1.4",
+  "version": "1.4.1",
   "description": "Allows quick jumping between WebKit, Chrome, V8, etc. source links",
   "icons": {
     "16": "icon16.png",
@@ -27,14 +27,6 @@
     "storage",
     "tabs",
     "webNavigation"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["*://code.google.com/searchframe"],
-      "js": ["js/code-search-frame.user.js"],
-      "run_at": "document_start",
-      "all_frames": true
-    }
   ],
   "omnibox": {
     "keyword" : "sql"

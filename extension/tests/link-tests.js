@@ -46,50 +46,25 @@ function assertLinkFromUrl(url, expectedType, expectedPath, expectedRelatedLinkU
 }
 
 function runTests() {
-  // WebKit from internal Code Search (and WebKit related links)
+  // WebKit from Google Project Hosting Code Search (and related links)
   assertLinkFromUrl(
-      'https://cs.corp.google.com/p#chrome/trunk/src/third_party/WebKit/WebCore/dom/ExceptionCode.h&q=security_err%20file:webkit&sa=N&cd=1&ct=rc',
+      'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&q=exceptioncode',
       WebKitLink,
-      'WebCore/dom/ExceptionCode.h',
-      ['http://trac.webkit.org/log/trunk/WebCore/dom/ExceptionCode.h',
-       'http://trac.webkit.org/browser/trunk/WebCore/dom/ExceptionCode.h',
-       'http://code.google.com/p/chromium/source/search?q=file:^src/third_party/WebKit/WebCore/dom/ExceptionCode.h$']);
+      'Source/WebCore/dom/ExceptionCode.h',
+      ['http://trac.webkit.org/log/trunk/Source/WebCore/dom/ExceptionCode.h',
+       'http://trac.webkit.org/browser/trunk/Source/WebCore/dom/ExceptionCode.h',
+       'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h']);
 
-  // WebKit layout test from internal Code Search (and related links)
+  // WebKit layout test from Google Project Hosting Code Search (and related links)
   assertLinkFromUrl(
-      'https://cs.corp.google.com/p#chrome/trunk/src/third_party/WebKit/LayoutTests/http/tests/security/cross-frame-access-first-time.html&q=canGet.*location%20file:LayoutTests%20-file:expected&d=0',
+      'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/LayoutTests/http/tests/security/cross-frame-access-first-time.html&q=canGet.*location%20file:LayoutTests%20-file:expected&sq=package:chromium&type=cs&l=39',
       WebKitLayoutTestLink,
       'LayoutTests/http/tests/security/cross-frame-access-first-time.html',
       ['http://test-results.appspot.com/dashboards/flakiness_dashboard.html#useWebKitCanary=true&tests=http%2Ftests%2Fsecurity%2Fcross-frame-access-first-time.html']);
 
-  // WebKit from public Code Search
+  // WebKit from HTTP (not HTTPS) Code Search with no extra params
   assertLinkFromUrl(
-      'http://www.google.com/codesearchp?hl=en#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&q=exceptioncode&exact_package=chromium&sa=N&cd=1&ct=rc',
-      WebKitLink,
-      'Source/WebCore/dom/ExceptionCode.h',
-      []);
-
-  assertLinkFromUrl(
-      'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&q=exceptioncode&gs=cpp:WebCore::INDEX_SIZE_ERR@chrome/trunk/src/third_party/WebKit/WebCore/dom/ExceptionCode.h%257Cdef&gsn=INDEX_SIZE_ERR',
-      WebKitLink,
-      'Source/WebCore/dom/ExceptionCode.h',
-      []);
-
-  assertLinkFromUrl(
-      'http://www.google.com/codesearch/p#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h',
-      WebKitLink,
-      'Source/WebCore/dom/ExceptionCode.h',
-      []);
-
-  // WebKit from public Code Search frame
-  assertLinkFromUrl(
-      'http://code.google.com/searchframe#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&exact_package=chromium&q=exceptioncode&type=cs',
-      WebKitLink,
-      'Source/WebCore/dom/ExceptionCode.h',
-      []);
-
-  assertLinkFromUrl(
-      'http://code.google.com/searchframe#OAMlx_jo-ck/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h',
+      'http://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h',
       WebKitLink,
       'Source/WebCore/dom/ExceptionCode.h',
       []);
@@ -111,33 +86,18 @@ function runTests() {
       'LayoutTests/http/tests/security/cross-frame-access-location-get.html',
       []);
 
-  // Chromium from internal Code Search (and Chromium related links)
+  // Chromium from Google Project Hosting Code Search (and Chromium related links)
   assertLinkFromUrl(
-      'https://cs.corp.google.com/p#chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h&q=NavigationController&sa=N&cd=4&ct=rc',
-      ChromiumLink,
-      'src/chrome/browser/tab_contents/navigation_controller.h',
-      ['http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=annotate',
-       'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=log',
-       'http://src.chromium.org/viewvc/chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h?view=markup',
-       'http://0.chrome_serve.web.web.grok.rv.borg.google.com/?file=chrome%2Ftrunk%2Fsrc%2Fchrome%2Fbrowser%2Ftab_contents%2Fnavigation_controller.h',
-       'http://code.google.com/p/chromium/source/search?q=file:^src/chrome/browser/tab_contents/navigation_controller.h$',
-       'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=blob',
-       'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=chrome/browser/tab_contents/navigation_controller.h;a=history'
-       ]);
-
-  // Chromium from public Code Search
-  assertLinkFromUrl(
-      'http://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/src/chrome/browser/tab_contents/navigation_controller.h&q=navigation_controller&exact_package=chromium&sa=N&cd=2&ct=rc',
-      ChromiumLink,
-      'src/chrome/browser/tab_contents/navigation_controller.h',
-      []);
-
-  // Chromium from public Code Search frame
-  assertLinkFromUrl(
-      'http://code.google.com/searchframe#OAMlx_jo-ck/src/content/public/browser/navigation_controller.h&exact_package=chromium&q=navigation_controller&type=cs',
+      'https://code.google.com/p/chromium/codesearch#chromium/src/content/public/browser/navigation_controller.h&q=NavigationController&sq=package:chromium&type=cs',
       ChromiumLink,
       'src/content/public/browser/navigation_controller.h',
-      []);
+      ['http://src.chromium.org/viewvc/chrome/trunk/src/content/public/browser/navigation_controller.h?view=annotate',
+       'http://src.chromium.org/viewvc/chrome/trunk/src/content/public/browser/navigation_controller.h?view=log',
+       'http://src.chromium.org/viewvc/chrome/trunk/src/content/public/browser/navigation_controller.h?view=markup',
+       'https://code.google.com/p/chromium/codesearch#chromium/src/content/public/browser/navigation_controller.h',
+       'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=content/public/browser/navigation_controller.h;a=blob',
+       'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=content/public/browser/navigation_controller.h;a=history'
+       ]);
 
   // Chromium from Chromium ViewVC
   assertLinkFromUrl(
@@ -173,35 +133,16 @@ function runTests() {
       'src/chrome/browser/app_modal_dialog_mac.mm',
       []);
 
-  // Chromium tools from public Code Search
+  // Chromium tools from Google Project Hosting Code Search
   assertLinkFromUrl(
-      'https://www.google.com/codesearch/p?hl=en#OAMlx_jo-ck/tools/buildbot/pylibs/buildbot/status/web/index.html&q=sweetcanvas&exact_package=chromium&d=5',
+      'https://code.google.com/p/chromium/codesearch#chromium/tools/chromium-buildbot/app.yaml&q=chromium-buildbot&type=cs&sq=package:chromium',
       ChromiumLink,
-      'tools/buildbot/pylibs/buildbot/status/web/index.html',
+      'tools/chromium-buildbot/app.yaml',
       []);
 
-  // Chromium tools from public Code Search frame
+  // V8 from Google Project Hosting Code Search (and related links)
   assertLinkFromUrl(
-      'http://code.google.com/searchframe#OAMlx_jo-ck/tools/build/masters/master.chromium/templates/builder_stats.html&exact_package=chromium&q=sweetcanvas&type=cs',
-      ChromiumLink,
-      'tools/build/masters/master.chromium/templates/builder_stats.html',
-      []);
-
-  // Chromium and WebKit from Grok
-  assertLinkFromUrl(
-      'http://0.chrome_serve.web.web.grok.rv.borg.google.com:25621/?file=chrome/trunk/src/third_party/WebKit/WebCore/dom/ExceptionCode.h',
-      WebKitLink,
-      'WebCore/dom/ExceptionCode.h',
-      []);
-  assertLinkFromUrl(
-      'http://0.chrome_serve.web.web.grok.rv.borg.google.com:25621/?file=chrome/trunk/src/chrome/browser/tab_contents/navigation_controller.h',
-      ChromiumLink,
-      'src/chrome/browser/tab_contents/navigation_controller.h',
-      []);
-
-  // V8 from internal Code Search (and related links)
-  assertLinkFromUrl(
-      'https://cs.corp.google.com/p#chrome/trunk/src/v8/include/v8.h&q=v8&exact_package=chrome',
+      'https://code.google.com/p/chromium/codesearch#chromium/src/v8/include/v8.h&q=v8&type=cs&sq=package:chromium',
       V8Link,
       'include/v8.h',
       ['http://code.google.com/p/v8/source/browse/trunk/include/v8.h',
