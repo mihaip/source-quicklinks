@@ -32,7 +32,8 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(
   {url: urlFilters});
 
 function getCodeSearchUrl(query) {
-  return 'https://code.google.com/p/chromium/codesearch#search/&q=' + query;
+  return 'https://code.google.com/p/chromium/codesearch#search/&q=' + query +
+      '&sq=package:chromium&type=cs';
 }
 
 chrome.omnibox.setDefaultSuggestion({
