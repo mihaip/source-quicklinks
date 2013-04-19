@@ -7,13 +7,15 @@ var EXTRACTORS_BY_HOSTNAME = {
 
 var CHROMIUM_CODE_SEARCH_PATH_PREFIX = "chromium";
 
-var WEBKIT_REPOSITORY_PREFIX = 'chrome/trunk/src/third_party/WebKit/';
-var WEBKIT_LAYOUT_PREFIX = 'LayoutTests/';
+var BLINK_REPOSITORY_PREFIX = 'chrome/trunk/src/third_party/WebKit/';
+var BLINK_LAYOUT_TEST_PREFIX = 'LayoutTests/';
+var FLAKINESS_DASHBOARD_PATH = 'http://test-results.appspot.com/dashboards/flakiness_dashboard.html';
+
 var WEBKIT_TRAC_BASE_BROWSER_PATH = 'http://trac.webkit.org/browser/trunk/';
 var WEBKIT_TRAC_BASE_LOG_PATH = 'http://trac.webkit.org/log/trunk/';
 
 var CHROMIUM_REPOSITORY_PREFIX = 'chrome/trunk/';
-var CHROMIUM_VIEWEVC_PATH = 'http://src.chromium.org/viewvc/chrome/trunk/';
+var CHROMIUM_VIEWVC_PATH = 'http://src.chromium.org/viewvc/chrome/trunk/';
 var CHROMIUM_GIT_PATH = 'http://git.chromium.org/gitweb/?p=chromium.git;hb=HEAD;f=';
 
 var V8_REPOSITORY_PREFIX = 'chrome/trunk/src/v8/';
@@ -21,6 +23,17 @@ var V8_CODESITE_HOSTNAME = 'http://code.google.com';
 var V8_CODESITE_BASE_PATH = '/trunk/';
 var V8_CODESITE_BROWSE_PATH = '/p/v8/source/browse' + V8_CODESITE_BASE_PATH;
 var V8_CODESITE_BASE_LOG_PATH = 'http://code.google.com/p/v8/source/list?path=' + V8_CODESITE_BASE_PATH;
+
+var BLINK_VIEWVC_PATH = 'http://src.chromium.org/viewvc/blink/trunk/';
+// Map of the moves described in http://goo.gl/T4VfS.
+var BLINK_PATH_TO_WEBKIT_PATH = {
+  'Source/core': 'Source/WebCore',
+  'Source/yarr': 'Source/JavaScriptCore/yarr',
+  'Source/devtools': 'Source/WebCore/inspector',
+  'Source/modules': 'Source/WebCore/Modules',
+  'Source/wtf': 'Source/WTF/wtf',
+  'Source/bindings': 'Source/WebCore/bindings'
+};
 
 var TRAC_ICON_URL = 'http://trac.webkit.org/chrome/common/trac.ico';
 var CHROMIUM_ICON_URL = 'http://build.chromium.org/favicon.ico';
@@ -37,12 +50,12 @@ function extractFromChromiumRepositoryPath(path) {
     return new V8Link(goog.string.removeAt(path, 0, V8_REPOSITORY_PREFIX.length));
   }
 
-  if (goog.string.startsWith(path, WEBKIT_REPOSITORY_PREFIX)) {
-    var webKitPath =
-        goog.string.removeAt(path, 0, WEBKIT_REPOSITORY_PREFIX.length);
-    return WebKitLayoutTestLink.getTestPath(webKitPath)
-        ? new WebKitLayoutTestLink(webKitPath)
-        : new WebKitLink(webKitPath);
+  if (goog.string.startsWith(path, BLINK_REPOSITORY_PREFIX)) {
+    var blinkPath =
+      goog.string.removeAt(path, 0, BLINK_REPOSITORY_PREFIX.length);
+    return BlinkLayoutTestLink.getTestPath(blinkPath)
+        ? new BlinkLayoutTestLink(blinkPath)
+        : new BlinkLink(blinkPath);
   }
 
   // Should be last
@@ -67,10 +80,15 @@ function extractFromWebKitTrac(url) {
 function extractFromChromium(url) {
   var path = goog.uri.utils.getPath(url);
 
-  var VIEWVC_TRUNK_SRC_RE = new RegExp('/viewvc/chrome/trunk/(.+)');
-  var match = VIEWVC_TRUNK_SRC_RE.exec(path);
+  var CHROMIUM_VIEWVC_TRUNK_SRC_RE = new RegExp('/viewvc/chrome/trunk/(.+)');
+  var match = CHROMIUM_VIEWVC_TRUNK_SRC_RE.exec(path);
   if (match) {
     return new ChromiumLink(match[1]);
+  }
+  var BLINK_VIEWVC_TRUNK_SRC_RE = new RegExp('/viewvc/blink/trunk/(.+)');
+  var match = BLINK_VIEWVC_TRUNK_SRC_RE.exec(path);
+  if (match) {
+    return new BlinkLink(match[1]);
   }
 
   return null;
@@ -127,10 +145,9 @@ function extractFromCodesite(url) {
   return null;
 }
 
-
 function WebKitLink(path) {
   Link.call(this, path);
-  this.chromiumRepositoryPath = 'src/third_party/WebKit/' + path;
+  this.chromiumRepositoryPath = null;
 }
 goog.inherits(WebKitLink, Link);
 
@@ -151,31 +168,27 @@ WebKitLink.prototype.addRelatedLinks = function(relatedLinks) {
         'Annotation (Trac)',
         TRAC_ICON_URL)
   ]);
-};
 
-function WebKitLayoutTestLink(path) {
-  WebKitLink.call(this, path);
-  this.testPath = WebKitLayoutTestLink.getTestPath(path);
-}
-goog.inherits(WebKitLayoutTestLink, WebKitLink);
-
-WebKitLayoutTestLink.getTestPath = function(path) {
-  if (goog.string.startsWith(path, WEBKIT_LAYOUT_PREFIX)) {
-    return goog.string.removeAt(path, 0, WEBKIT_LAYOUT_PREFIX.length);
-  } else {
-    return null;
+  var blinkPath = this.path;
+  for (var p in BLINK_PATH_TO_WEBKIT_PATH) {
+    blinkPath = blinkPath.replace(BLINK_PATH_TO_WEBKIT_PATH[p], p);
   }
+
+  goog.array.extend(relatedLinks, [
+    new RelatedLink(
+        BLINK_VIEWVC_PATH + blinkPath + '?view=markup',
+        'Blink equivalent - current version',
+        CHROMIUM_ICON_URL),
+    new RelatedLink(
+        BLINK_VIEWVC_PATH + blinkPath + '?view=log',
+        'Blink equivalent - revision log',
+        CHROMIUM_ICON_URL),
+    new RelatedLink(
+        BLINK_VIEWVC_PATH + blinkPath + '?view=annotate',
+        'Blink equivalent - annotation',
+        CHROMIUM_ICON_URL)
+  ]);
 };
-
-WebKitLayoutTestLink.prototype.addRelatedLinks = function(relatedLinks) {
-  WebKitLayoutTestLink.superClass_.addRelatedLinks.call(this, relatedLinks);
-
-  relatedLinks.push(new RelatedLink(
-      'http://test-results.appspot.com/dashboards/flakiness_dashboard.html' +
-          '#useWebKitCanary=true&tests=' + encodeURIComponent(this.testPath),
-      'Chromium/WebKit Test History',
-      CHROMIUM_ICON_URL));
-}
 
 function ChromiumLink(path) {
   Link.call(this, path);
@@ -187,15 +200,15 @@ ChromiumLink.prototype.addRelatedLinks = function(relatedLinks) {
   ChromiumLink.superClass_.addRelatedLinks.call(this, relatedLinks);
   goog.array.extend(relatedLinks, [
     new RelatedLink(
-        CHROMIUM_VIEWEVC_PATH + this.path + '?view=markup',
+        CHROMIUM_VIEWVC_PATH + this.path + '?view=markup',
         'Current version (ViewVC)',
         CHROMIUM_ICON_URL),
     new RelatedLink(
-        CHROMIUM_VIEWEVC_PATH + this.path + '?view=log',
+        CHROMIUM_VIEWVC_PATH + this.path + '?view=log',
         'Revision log (ViewVC)',
         CHROMIUM_ICON_URL),
     new RelatedLink(
-        CHROMIUM_VIEWEVC_PATH + this.path + '?view=annotate',
+        CHROMIUM_VIEWVC_PATH + this.path + '?view=annotate',
         'Annotation (ViewVC)',
         CHROMIUM_ICON_URL)
   ]);
@@ -241,6 +254,83 @@ V8Link.prototype.addRelatedLinks = function(relatedLinks) {
   ]);
 };
 
+function BlinkLink(path) {
+  Link.call(this, path);
+  this.chromiumRepositoryPath = 'src/third_party/WebKit/' + path;
+}
+goog.inherits(BlinkLink, Link);
+
+BlinkLink.prototype.addRelatedLinks = function(relatedLinks) {
+  BlinkLink.superClass_.addRelatedLinks.call(this, relatedLinks);
+
+  goog.array.extend(relatedLinks, [
+    new RelatedLink(
+        BLINK_VIEWVC_PATH + this.path + '?view=markup',
+        'Current version (ViewVC)',
+        CHROMIUM_ICON_URL),
+    new RelatedLink(
+        BLINK_VIEWVC_PATH + this.path + '?view=log',
+        'Revision log (ViewVC)',
+        CHROMIUM_ICON_URL),
+    new RelatedLink(
+        BLINK_VIEWVC_PATH + this.path + '?view=annotate',
+        'Annotation (ViewVC)',
+        CHROMIUM_ICON_URL)
+  ]);
+
+  var webKitPath = this.path;
+  for (var p in BLINK_PATH_TO_WEBKIT_PATH) {
+    webKitPath = webKitPath.replace(p, BLINK_PATH_TO_WEBKIT_PATH[p]);
+  }
+
+  goog.array.extend(relatedLinks, [
+    new RelatedLink(
+        WEBKIT_TRAC_BASE_BROWSER_PATH + webKitPath,
+        'WebKit equivalent - current version',
+        TRAC_ICON_URL),
+    new RelatedLink(
+        WEBKIT_TRAC_BASE_LOG_PATH + webKitPath,
+        'WebKit equivalent - revision log',
+        TRAC_ICON_URL),
+    new RelatedLink(
+        WEBKIT_TRAC_BASE_BROWSER_PATH + webKitPath + '?annotate=blame',
+        'WebKit equivalent - annotation',
+        TRAC_ICON_URL),
+  ]);
+};
+
+function BlinkLayoutTestLink(path) {
+  BlinkLink.call(this, path);
+  this.testPath = BlinkLayoutTestLink.getTestPath(path);
+}
+goog.inherits(BlinkLayoutTestLink, BlinkLink);
+
+BlinkLayoutTestLink.getTestPath = function(path) {
+  if (goog.string.startsWith(path, BLINK_LAYOUT_TEST_PREFIX)) {
+    return goog.string.removeAt(path, 0, BLINK_LAYOUT_TEST_PREFIX.length);
+  } else {
+    return null;
+  }
+};
+
+BlinkLayoutTestLink.prototype.addRelatedLinks = function(relatedLinks) {
+  BlinkLayoutTestLink.superClass_.addRelatedLinks.call(this, relatedLinks);
+
+  var encodedPath = encodeURIComponent(this.testPath)
+  goog.array.extend(relatedLinks, [
+    new RelatedLink(
+        FLAKINESS_DASHBOARD_PATH + '#group=%40ToT%20-%20chromium.org&tests=' +
+          encodedPath,
+        'Flakiness Dashboard (@ToT)',
+        CHROMIUM_ICON_URL),
+      new RelatedLink(
+        FLAKINESS_DASHBOARD_PATH + '#group=%40DEPS%20-%20chromium.org&tests=' +
+          encodedPath,
+        'Flakiness Dashboard (@DEPS)',
+        CHROMIUM_ICON_URL)
+  ]);
+}
+
 function RelatedLink(url, title, iconUrl) {
   this.url = url;
   this.title = title;
@@ -252,12 +342,14 @@ function Link(path) {
 }
 
 Link.prototype.addRelatedLinks = function(relatedLinks) {
-  relatedLinks.push(
-      new RelatedLink(
-          'https://code.google.com/p/chromium/codesearch#chromium/' +
-            this.chromiumRepositoryPath,
-          'Code Search',
-          CODE_SEARCH_ICON_URL));
+  if (this.chromiumRepositoryPath) {
+    relatedLinks.push(
+        new RelatedLink(
+            'https://code.google.com/p/chromium/codesearch#chromium/' +
+              this.chromiumRepositoryPath,
+            'Code Search',
+            CODE_SEARCH_ICON_URL));
+  }
 };
 
 Link.prototype.getRelatedLinks = function() {

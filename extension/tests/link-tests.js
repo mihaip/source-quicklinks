@@ -46,35 +46,51 @@ function assertLinkFromUrl(url, expectedType, expectedPath, expectedRelatedLinkU
 }
 
 function runTests() {
-  // WebKit from Google Project Hosting Code Search (and related links)
+  // Blink from ViewVC (and related links)
   assertLinkFromUrl(
-      'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h&q=exceptioncode',
-      WebKitLink,
-      'Source/WebCore/dom/ExceptionCode.h',
-      ['http://trac.webkit.org/log/trunk/Source/WebCore/dom/ExceptionCode.h',
+      'https://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h',
+      BlinkLink,
+      'Source/core/dom/ExceptionCode.h',
+      ['http://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h?view=annotate',
+       'http://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h?view=log',
+       'http://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h?view=markup',
+       'http://trac.webkit.org/log/trunk/Source/WebCore/dom/ExceptionCode.h',
        'http://trac.webkit.org/browser/trunk/Source/WebCore/dom/ExceptionCode.h',
-       'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h']);
+       'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/ExceptionCode.h']);
 
-  // WebKit layout test from Google Project Hosting Code Search (and related links)
+  // Blink from Google Project Hosting Code Search
+  assertLinkFromUrl(
+      'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/ExceptionCode.h&q=exceptioncode',
+      BlinkLink,
+      'Source/core/dom/ExceptionCode.h',
+      []);
+
+  // Blink layout test from Google Project Hosting Code Search (and related links)
   assertLinkFromUrl(
       'https://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/LayoutTests/http/tests/security/cross-frame-access-first-time.html&q=canGet.*location%20file:LayoutTests%20-file:expected&sq=package:chromium&type=cs&l=39',
-      WebKitLayoutTestLink,
+      BlinkLayoutTestLink,
       'LayoutTests/http/tests/security/cross-frame-access-first-time.html',
-      ['http://test-results.appspot.com/dashboards/flakiness_dashboard.html#useWebKitCanary=true&tests=http%2Ftests%2Fsecurity%2Fcross-frame-access-first-time.html']);
+      ['http://test-results.appspot.com/dashboards/flakiness_dashboard.html#group=%40ToT%20-%20chromium.org&tests=http%2Ftests%2Fsecurity%2Fcross-frame-access-first-time.html',
+       'http://test-results.appspot.com/dashboards/flakiness_dashboard.html#group=%40DEPS%20-%20chromium.org&tests=http%2Ftests%2Fsecurity%2Fcross-frame-access-first-time.html']);
 
   // WebKit from HTTP (not HTTPS) Code Search with no extra params
   assertLinkFromUrl(
-      'http://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/WebCore/dom/ExceptionCode.h',
-      WebKitLink,
-      'Source/WebCore/dom/ExceptionCode.h',
+      'http://code.google.com/p/chromium/codesearch#chromium/src/third_party/WebKit/Source/core/dom/ExceptionCode.h',
+      BlinkLink,
+      'Source/core/dom/ExceptionCode.h',
       []);
 
   // WebKit from WebKit Trac
   assertLinkFromUrl(
-      'http://trac.webkit.org/log/trunk/WebCore/dom/ExceptionCode.h?rev=64763',
+      'http://trac.webkit.org/log/trunk/Source/WebCore/dom/ExceptionCode.h?rev=64763',
       WebKitLink,
-      'WebCore/dom/ExceptionCode.h',
-      []);
+      'Source/WebCore/dom/ExceptionCode.h',
+      ['http://trac.webkit.org/log/trunk/Source/WebCore/dom/ExceptionCode.h',
+       'http://trac.webkit.org/browser/trunk/Source/WebCore/dom/ExceptionCode.h',
+       'http://trac.webkit.org/browser/trunk/Source/WebCore/dom/ExceptionCode.h?annotate=blame',
+       'http://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h?view=annotate',
+       'http://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h?view=log',
+       'http://src.chromium.org/viewvc/blink/trunk/Source/core/dom/ExceptionCode.h?view=markup']);
   assertLinkFromUrl(
       'http://trac.webkit.org/browser/trunk/LayoutTests/http/tests/security/cross-frame-access-location-get.html',
       WebKitLink,
@@ -159,7 +175,6 @@ function runTests() {
       V8Link,
       'include/v8.h',
       []);
-
 
   log('\nTESTS COMPLETE', 'green');
 }

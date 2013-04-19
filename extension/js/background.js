@@ -48,7 +48,7 @@ chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
     },
     {
       content: getCodeSearchUrl('file:^src/third_party/WebKit ' + text),
-      description: '<match>' + text + '</match> in the WebKit repository'
+      description: '<match>' + text + '</match> in the Blink repository'
     },
     {
       content: getCodeSearchUrl('file:' + text),
@@ -61,6 +61,10 @@ chrome.omnibox.onInputChanged.addListener(function(text, suggest) {
       {
         content: 'http://git.chromium.org/gitweb/?p=chromium.git&a=search&h=HEAD&st=author&s=' + text,
         description: 'Changes by <match>' + text + '</match> in the Chromium repository'
+      },
+      {
+        content: 'http://svnsearch.org/svnsearch/repos/BLINK/search?author=' + text,
+        description: 'Changes by <match>' + text + '</match> in the Blink repository'
       },
       {
         content: 'http://trac.webkit.org/search?q=' + text + '&noquickjump=1&changeset=on',

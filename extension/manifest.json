@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Source Quicklinks",
-  "version": "1.4.2",
-  "description": "Allows quick jumping between WebKit, Chrome, V8, etc. source links",
+  "version": "1.5",
+  "description": "Allows quick jumping between Chrome, Blink, WebKit, V8, etc. source links",
   "icons": {
     "16": "icon16.png",
     "32": "icon32.png",
